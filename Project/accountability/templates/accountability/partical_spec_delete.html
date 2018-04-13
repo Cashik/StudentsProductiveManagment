@@ -1,0 +1,18 @@
+{% load widget_tweaks %}
+
+<form method="post"
+      action="{% url 'specialty_delete' %}"
+      class="js-spec-delete-form">
+    {% csrf_token %}
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title text-danger">Вы действительно хотите удалить специальность {{ spec.name }}?</h4>
+    </div>
+    <input type="hidden" name="id" value="{{ spec.id }}">
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Отменить</button>
+        <button type="submit" class="btn btn-danger">Удалить</button>
+    </div>
+</form>

@@ -1,0 +1,32 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+
+    {% block links %} {% endblock %}
+    {% block scripts %} {% endblock %}
+
+</head>
+<body>
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Учет успеваемости студентов</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Специальности</a></li>
+            <li><a href="#">XXXXXXXXXXXXX</a></li>
+            <li><a href="#">XXXXXXXXXXXX</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+    {% block table %}{% endblock %}
+</div>
+</body>
+</html>

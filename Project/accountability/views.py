@@ -12,7 +12,7 @@ from .models import Specialties
 
 
 def specialties(request):
-    return render(request, 'accountability\\specialties_list.html', {})
+    return render(request, 'accountability/specialties_list.html', {})
 
 
 def specialties_as_json(request):
@@ -45,7 +45,7 @@ def specialty_create(request):
         form = SpecialtyForm(request.POST)
     else:
         form = SpecialtyForm()
-    return save_specialty_form(request, form, 'accountability\\partical_spec_create.html')
+    return save_specialty_form(request, form, 'accountability/partical_spec_create.html')
 
 
 @csrf_exempt
@@ -58,7 +58,7 @@ def specialty_update(request):
         spec = get_object_or_404(Specialties, pk=request.GET['id'])
         print(request.GET)
         form = SpecialtyForm(instance=spec)
-    return save_specialty_form(request, form, 'accountability\\partical_spec_update.html')
+    return save_specialty_form(request, form, 'accountability/partical_spec_update.html')
 
 
 @csrf_exempt
@@ -72,7 +72,7 @@ def specialty_delete(request):
         spec = get_object_or_404(Specialties, pk=request.GET['id'])
         #data['form_is_valid'] = False
         context = {'spec': spec}
-        data['html_form'] = render_to_string('accountability\\partical_spec_delete.html',
+        data['html_form'] = render_to_string('accountability/partical_spec_delete.html',
                                              context,
                                              request=request, )
     return JsonResponse(data)

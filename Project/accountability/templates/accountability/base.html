@@ -18,9 +18,11 @@
             <a class="navbar-brand" href="#">Учет успеваемости студентов</a>
         </div>
         <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Специальности</a></li>
-            <li><a href="#">XXXXXXXXXXXXX</a></li>
-            <li><a href="#">XXXXXXXXXXXX</a></li>
+            <li><a href="{% url 'specialties' %}">Специальности</a></li>
+            <li><a href="{% url 'courses' %}">Курсы</a></li>
+            <li><a href="{% url 'students' %}">Студенты</a></li>
+            <li><a href="{% url 'subjects' %}">Предметы</a></li>
+            <li><a href="{% url 'appraisals' %}">Успеваемость</a></li>
         </ul>
     </div>
 </nav>

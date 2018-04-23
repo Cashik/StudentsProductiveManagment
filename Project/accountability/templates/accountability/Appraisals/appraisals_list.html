@@ -1,0 +1,155 @@
+{% extends 'accountability/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block title %}Курсы{% endblock %}
+
+{% block links %}
+    <link rel="stylesheet" href="{% static 'DataTables/Bootstrap-3.3.7/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'DataTables/DataTables-1.10.16/css/dataTables.bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'DataTables/Select-1.2.5/css/select.bootstrap.css' %}">
+
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript" src="{% static "DataTables/jQuery-3.2.1/jquery-3.2.1.js" %}"></script>
+    <script type="text/javascript" src="{% static "DataTables/Bootstrap-3.3.7/js/bootstrap.js" %}"></script>
+    <script type="text/javascript" src="{% static "DataTables/DataTables-1.10.16/js/jquery.dataTables.js" %}"></script>
+    <script type="text/javascript"
+            src="{% static "DataTables/DataTables-1.10.16/js/dataTables.bootstrap.js" %}"></script>
+    <script type="text/javascript" src="{% static "DataTables/Select-1.2.5/js/dataTables.select.js" %}"></script>
+
+    <script type="text/javascript" language="javascript" class="init">
+        $(document).ready(function () {
+            var table = $('#example').DataTable({
+                paging: false,
+                select: true,
+                ajax: {
+                    "url": "{% url 'appraisals_list' %}",
+                    "dataSrc": "data"
+                },
+                columnDefs: [
+                    {
+                        targets: [0],
+                        visible: false,
+                        searchable: false
+                    }],
+                columns: [
+                    {name: "№", data: "id",},
+                    {name: "Предмет", data: "subject_name",},
+                    //{name: "Специальность", data: "specialty",},
+                    {name: "Студент", data: "student_name"},
+                    {name: "Оценка", data: "rating"},
+                    {name: "Дата", data: "changed_date"},
+                ]
+            });
+
+
+            var loadForm = function () {
+                var btn = $(this);
+                $.ajax({
+                    url: btn.attr("data-url"),
+                    data: {'id': table.cell('.selected', 0).data()},
+                    type: 'get',
+                    dataType: 'json',
+                    beforeSend: function () {
+                        $("#modal-edit").modal("show");
+                    },
+                    success: function (data) {
+                        $("#modal-edit .modal-content").html(data.html_form);
+                    }
+                });
+            };
+
+            var saveForm = function () {
+                var form = $(this);
+                $.ajax({
+                    url: form.attr("action"),
+                    data: form.serialize(),
+                    type: form.attr("method"),
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.form_is_valid) {
+                            table.ajax.reload();
+                            $(".btn-update").attr("disabled", true);
+                            $(".btn-delete").attr("disabled", true);
+                            $("#modal-edit").modal("hide");
+                        }
+                        else {
+                            $("#modal-edit .modal-content").html(data.html_form);
+                        }
+                    }
+                });
+                return false;
+            };
+
+            $('#example tbody').on('click', 'tr', function () {
+                if ($(this).hasClass('selected')) {
+                    $(".btn-update").attr("disabled", true);
+                    $(".btn-delete").attr("disabled", true);
+                } else {
+                    $(".btn-update").attr("disabled", false);
+                    $(".btn-delete").attr("disabled", false);
+                }
+
+            });
+            /* Binding */
+
+            $("#modal-edit").on("submit", ".edit-form", saveForm);
+
+            $(".btn-show-modal").each(function (i, e) {
+                $(e).click(loadForm);
+            });
+
+        });
+    </script>
+{% endblock %}
+
+
+{% block table %}
+
+    <div class="jumbotron">
+        <h1>Учет успеваемости</h1>
+        <p>Список всех оценок студентов с возможностью поиска и фильтрации.</p>
+    </div>
+
+
+    <p>
+        <button type="button"
+                class="btn btn-primary btn-show-modal btn-create"
+                data-url="{% url 'appraisal_create' %}">
+            <span class="glyphicon glyphicon-plus"></span>
+            Добавить
+        </button>
+
+        <button type="button"
+                class="btn btn-warning btn-show-modal btn-update"
+                data-url="{% url 'appraisal_update' %}" disabled>
+            <span class="glyphicon glyphicon-edit"></span>
+            Изменить
+        </button>
+
+        <button type="button"
+                class="btn btn-danger btn-show-modal btn-delete"
+                data-url="{% url 'appraisal_delete' %}" disabled>
+            <span class="glyphicon glyphicon-trash"></span>
+            Удалить
+        </button>
+    </p>
+
+    <table class="table text-center" id="example">
+
+        <thead>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <!-- THE MODAL WE WILL BE USING -->
+    <div class="modal fade" id="modal-edit">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            </div>
+        </div>
+    </div>
+{% endblock %}

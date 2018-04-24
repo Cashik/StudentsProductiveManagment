@@ -22,9 +22,12 @@
 
     <script type="text/javascript" language="javascript" class="init">
         $(document).ready(function () {
+            $("#example").append('<tfoot><tr><th></th><th></th><th></th><th></th><th></th></tr></tfoot>');
             var table = $('#example').DataTable({
-                paging: false,
                 select: true,
+                language: {
+                    url: "//cdn.datatables.net/plug-ins/1.10.16/i18n/Russian.json"
+                },
                 ajax: {
                     "url": "{% url 'appraisals_list' %}",
                     "dataSrc": "data"
@@ -35,14 +38,35 @@
                         visible: false,
                         searchable: false
                     }],
-                columns: [
-                    {name: "№", data: "id",},
-                    {name: "Предмет", data: "subject_name",},
+                aoColumns: [
+                    {"title": "№", "mData": "id",},
+                    {"title": "Предмет", "mData": "subject_name",},
                     //{name: "Специальность", data: "specialty",},
-                    {name: "Студент", data: "student_name"},
-                    {name: "Оценка", data: "rating"},
-                    {name: "Дата", data: "changed_date"},
-                ]
+                    {"title": "Студент", "mData": "student_name"},
+                    {"title": "Оценка", "mData": "rating"},
+                    {"title": "Дата", "mData": "changed_date"},
+                ],
+                initComplete: function () {
+                    this.api().columns().every(function () {
+                        var column = this;
+                        var select = $('<select class="form-control " ><option value=""></option></select>')
+                            .appendTo($(column.footer()).empty())
+                            .on('change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+
+                                column
+                                    .search(val ? '^' + val + '$' : '', true, false)
+                                    .draw();
+                            });
+                        column.data().unique().sort().each(function (d, j) {
+                            select.append('<option value="' + d + '">' + d + '</option>')
+                        });
+                    });
+                }
+
+
             });
 
 
@@ -139,10 +163,11 @@
     </p>
 
     <table class="table text-center" id="example">
-
         <thead>
+
         </thead>
         <tbody></tbody>
+
     </table>
 
     <!-- THE MODAL WE WILL BE USING -->

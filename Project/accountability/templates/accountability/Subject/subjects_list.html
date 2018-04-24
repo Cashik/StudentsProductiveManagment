@@ -25,6 +25,9 @@
             var table = $('#example').DataTable({
                 paging: false,
                 select: true,
+                language: {
+                    url: "//cdn.datatables.net/plug-ins/1.10.16/i18n/Russian.json"
+                },
                 ajax: {
                     "url": "{% url 'subjects_list' %}",
                     "dataSrc": "data"
@@ -35,11 +38,11 @@
                         visible: false,
                         searchable: false
                     }],
-                columns: [
-                    {name: "№", data: "id",},
-                    {name: "Название", data: "name",},
-                    {name: "Специальности", data: "specialties",},
-                    {name: "Описание", data: "description"}
+                aoColumns: [
+                    {title: "№", mData: "id",},
+                    {title: "Название", mData: "name",},
+                    {title: "Специальности", mData: "specialties",},
+                    {title: "Описание", mData: "description"}
                 ]
             });
 

@@ -23,8 +23,10 @@
     <script type="text/javascript" language="javascript" class="init">
         $(document).ready(function () {
             var table = $('#example').DataTable({
-                paging: false,
                 select: true,
+                language: {
+                    url: "//cdn.datatables.net/plug-ins/1.10.16/i18n/Russian.json"
+                },
                 ajax: {
                     "url": "{% url 'students_list' %}",
                     "dataSrc": "data"
@@ -35,11 +37,11 @@
                         visible: false,
                         searchable: false
                     }],
-                columns: [
-                    {name: "№", data: "id",},
-                    {name: "ФИО", data: "fio",},
-                    {name: "Специальность", data: "specialty_name"},
-                    {name: "Курс", data: "course_name"},
+                aoColumns: [
+                    {title: "№", mData: "id",},
+                    {title: "ФИО", mData: "fio",},
+                    {title: "Специальность", mData: "specialty_name"},
+                    {title: "Курс", mData: "course_name"},
                 ]
             });
 

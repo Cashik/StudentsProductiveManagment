@@ -40,7 +40,11 @@ class Students(models.Model):
     def fio(self):
         return "{0} {1} {2}".format(self.surname, self.name, self.patronymic)
 
-    course = models.ForeignKey(Courses, on_delete=models.SET_NULL, null=True, default=True, verbose_name="Курс")
+    course = models.ForeignKey(Courses,
+                               on_delete=models.SET_NULL,
+                               null=True,
+                               default=True,
+                               verbose_name="Курс")
     specialty = models.ForeignKey(Specialties,
                                   on_delete=models.SET_NULL,
                                   null=True,
@@ -52,20 +56,13 @@ class Students(models.Model):
 
 
 class Appraisals(models.Model):
-    changed_date = models.DateTimeField(default=now, verbose_name="Дата изменения")
+    changed_date = models.DateTimeField(default=now, verbose_name="Дата последнего изменения")
     student = models.ForeignKey(Students, on_delete=models.CASCADE, verbose_name="Студент")
     subject = models.ForeignKey(Subjects, on_delete=models.CASCADE, verbose_name="Предмет")
     rating = models.IntegerField(default=100, verbose_name="Оценка")
 
-    # TODO: оценка в шкале А,B,C. . .
-    '''
-    @property
-    def grade(self):
-        if self.rating >= 90:
-            return 'A'
-        elif
-    '''
-    pass
+    def __str__(self):
+        return "{0} {1} {2}".format(self.subject.name, self.student.surname, self.rating)
 
 
 @receiver(pre_save, sender=Appraisals)

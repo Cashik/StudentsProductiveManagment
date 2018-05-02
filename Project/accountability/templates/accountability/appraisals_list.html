@@ -1,15 +1,14 @@
 {% extends 'accountability/base.html' %}
+
 {% load static %}
 {% load widget_tweaks %}
 
-
-{% block title %}Курсы{% endblock %}
+{% block title %}Учет успеваемости{% endblock %}
 
 {% block links %}
     <link rel="stylesheet" href="{% static 'DataTables/Bootstrap-3.3.7/css/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'DataTables/DataTables-1.10.16/css/dataTables.bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'DataTables/Select-1.2.5/css/select.bootstrap.css' %}">
-
 {% endblock %}
 
 {% block scripts %}
@@ -19,6 +18,7 @@
     <script type="text/javascript"
             src="{% static "DataTables/DataTables-1.10.16/js/dataTables.bootstrap.js" %}"></script>
     <script type="text/javascript" src="{% static "DataTables/Select-1.2.5/js/dataTables.select.js" %}"></script>
+
 
     <script type="text/javascript" language="javascript" class="init">
         $(document).ready(function () {
@@ -41,7 +41,6 @@
                 aoColumns: [
                     {"title": "№", "mData": "id",},
                     {"title": "Предмет", "mData": "subject_name",},
-                    //{name: "Специальность", data: "specialty",},
                     {"title": "Студент", "mData": "student_name"},
                     {"title": "Оценка", "mData": "rating"},
                     {"title": "Дата", "mData": "changed_date"},
@@ -65,10 +64,7 @@
                         });
                     });
                 }
-
-
             });
-
 
             var loadForm = function () {
                 var btn = $(this);
@@ -116,9 +112,7 @@
                     $(".btn-update").attr("disabled", false);
                     $(".btn-delete").attr("disabled", false);
                 }
-
             });
-            /* Binding */
 
             $("#modal-edit").on("submit", ".edit-form", saveForm);
 
@@ -130,14 +124,12 @@
     </script>
 {% endblock %}
 
-
 {% block table %}
 
     <div class="jumbotron">
         <h1>Учет успеваемости</h1>
         <p>Список всех оценок студентов с возможностью поиска и фильтрации.</p>
     </div>
-
 
     <p>
         <button type="button"
@@ -170,7 +162,6 @@
 
     </table>
 
-    <!-- THE MODAL WE WILL BE USING -->
     <div class="modal fade" id="modal-edit">
         <div class="modal-dialog">
             <div class="modal-content">

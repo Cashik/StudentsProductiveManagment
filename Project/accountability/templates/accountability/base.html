@@ -1,17 +1,13 @@
 {% load staticfiles %}
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
-
     {% block links %} {% endblock %}
     {% block scripts %} {% endblock %}
-
 </head>
 <body>
-
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -25,7 +21,6 @@
         </ul>
     </div>
 </nav>
-
 <div class="container">
     {% block table %}{% endblock %}
 </div>
